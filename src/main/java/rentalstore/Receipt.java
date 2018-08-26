@@ -24,6 +24,10 @@ public class Receipt {
         return price;
     }
 
+    private double countNewReleaseMoviePrice(int dayRented){
+        return dayRented * 3.0;
+    }
+
     private double getItemSubTotalPrice(Rental rental){
         double subTotalPrice = 0;
         switch (rental.getMovie().getPriceCode()) {
@@ -31,7 +35,7 @@ public class Receipt {
                 subTotalPrice = countRegularMoviePrice(rental.getDayRented());
                 break;
             case Movie.NEW_RELEASE:
-                subTotalPrice += rental.getDayRented() * 3;
+                subTotalPrice = countNewReleaseMoviePrice(rental.getDayRented());
                 break;
             case Movie.CHILDREN:
                 subTotalPrice += 1.5;
