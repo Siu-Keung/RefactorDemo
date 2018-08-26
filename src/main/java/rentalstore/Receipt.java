@@ -39,6 +39,14 @@ public class Receipt {
         return subTotalPrice;
     }
 
+    public double getTotalPrice(){
+        double totalPrice = 0;
+        for (Rental rental : rentals) {
+            totalPrice += getItemSubTotalPrice(rental);
+        }
+        return totalPrice;
+    }
+
     public String getHeaderStr(){
         return "<H1>Rentals for <EM>" + this.customer.getName() + "</EM></H1><P>\n";
     }
@@ -54,7 +62,6 @@ public class Receipt {
     }
 
     public String getReceiptStr(){
-        double totalAmount = 0;
         int frequentRenterPoints = 0;
         String result = "Rental Record for " + this.customer.getName() + "\n";
         List<Rental> rentals = this.rentals.stream().distinct().collect(Collectors.toList());
@@ -71,10 +78,9 @@ public class Receipt {
 
             //show figures for this rental
             result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(subTotalPrice) + "\n";
-            totalAmount += subTotalPrice;
         }
         //add footer lines
-        result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
+        result += "Amount owed is " + getTotalPrice() + "\n";
         result += "You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points";
         return result;
     }
