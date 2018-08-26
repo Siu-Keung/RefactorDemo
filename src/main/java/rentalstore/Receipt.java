@@ -43,12 +43,14 @@ public class Receipt {
         return itemsStrBuilder.toString();
     }
 
-    public int getRentalPointsEarned() {
-        int rentalPoints = 0;
+    public double getRentalPointsEarned() {
+        double rentalPoints = 0;
         for (Rental rental : rentals) {
             rentalPoints++;
             if (rental.getMovie().getMovieType() == MovieType.NEW_RELEASE && rental.getDayRented() > 1)
                 rentalPoints++;
+            else if(rental.getMovie().getMovieType() == MovieType.ART)
+                rentalPoints += 0.5;
         }
         return rentalPoints;
     }
