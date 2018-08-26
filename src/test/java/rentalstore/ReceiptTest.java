@@ -18,11 +18,11 @@ public class ReceiptTest {
         );
         Receipt receipt = new Receipt(customer, rentals);
         String expectedReceipt =
-                "Rental Record for Dylan\n" +
-                        "\tTitanic\t2.0\n" +
-                        "Amount owed is 2.0\n" +
-                        "You earned 1 frequent renter points";
-        assertThat(receipt.getReceiptStr(), is(expectedReceipt));
+                "<H1>Rentals for <EM>Dylan</EM></H1><P>\n" +
+                        "Titanic: 2.0<BR>\n" +
+                        "<P>You owe<EM>2.0</EM><P>\n" +
+                        "On this rental you earned <EM>1</EM> frequent renter points<P>";
+        assertThat(receipt.getReceiptHtml(), is(expectedReceipt));
     }
 
     @Test
@@ -34,12 +34,12 @@ public class ReceiptTest {
         );
         Receipt receipt = new Receipt(customer, rentals);
         String expectedReceipt =
-                "Rental Record for Dylan\n" +
-                        "\tTitanic\t3.5\n" +
-                        "\tThe Ring\t3.0\n" +
-                        "Amount owed is 6.5\n" +
-                        "You earned 2 frequent renter points";
-        assertThat(receipt.getReceiptStr(), is(expectedReceipt));
+                "<H1>Rentals for <EM>Dylan</EM></H1><P>\n" +
+                        "Titanic: 3.5<BR>\n" +
+                        "The Ring: 3.0<BR>\n" +
+                        "<P>You owe<EM>6.5</EM><P>\n" +
+                        "On this rental you earned <EM>2</EM> frequent renter points<P>";
+        assertThat(receipt.getReceiptHtml(), is(expectedReceipt));
     }
 
     @Test
@@ -52,13 +52,13 @@ public class ReceiptTest {
         );
         Receipt receipt = new Receipt(customer, rentals);
         String expectedReceipt =
-                "Rental Record for Dylan\n" +
-                        "\tTitanic\t3.5\n" +
-                        "\tThe Ring\t3.0\n" +
-                        "\tOne Day\t1.5\n" +
-                        "Amount owed is 8.0\n" +
-                        "You earned 3 frequent renter points";
-        assertThat(receipt.getReceiptStr(), is(expectedReceipt));
+                "<H1>Rentals for <EM>Dylan</EM></H1><P>\n" +
+                        "Titanic: 3.5<BR>\n" +
+                        "The Ring: 3.0<BR>\n" +
+                        "One Day: 1.5<BR>\n" +
+                        "<P>You owe<EM>8.0</EM><P>\n" +
+                        "On this rental you earned <EM>3</EM> frequent renter points<P>";
+        assertThat(receipt.getReceiptHtml(), is(expectedReceipt));
     }
 
     @Test
@@ -76,5 +76,6 @@ public class ReceiptTest {
                         "One Day: 1.5<BR>\n";
         assertThat(receipt.getItemsHtml(), is(expectedItemsStr));
     }
+
 
 }

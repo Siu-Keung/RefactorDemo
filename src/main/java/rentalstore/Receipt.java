@@ -71,20 +71,19 @@ public class Receipt {
         return rentalPoints;
     }
 
-    public String getReceiptStr(){
-        String result = "Rental Record for " + this.customer.getName() + "\n";
-        List<Rental> rentals = this.rentals.stream().distinct().collect(Collectors.toList());
-        Iterator<Rental> rentalSetIterator = rentals.iterator();
-        while (rentalSetIterator.hasNext()) {
-            Rental each = rentalSetIterator.next();
-            double subTotalPrice = getItemSubTotalPrice(each);
-            //show figures for this rental
-            result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(subTotalPrice) + "\n";
-        }
-        //add footer lines
-        result += "Amount owed is " + getTotalPrice() + "\n";
-        result += "You earned " + getRentalPointsEarned() + " frequent renter points";
-        return result;
+    public String getFooterHtml(){
+        StringBuilder footerHtmlBuilder = new StringBuilder();
+        footerHtmlBuilder.append("<P>You owe<EM>" + getTotalPrice() + "</EM><P>\n");
+        footerHtmlBuilder.append("On this rental you earned <EM>" + getRentalPointsEarned() + "</EM> frequent renter points<P>");
+        return footerHtmlBuilder.toString();
+    }
+
+    public String getReceiptHtml(){
+        StringBuilder receiptHtml = new StringBuilder();
+        receiptHtml.append(getHeaderHtml());
+        receiptHtml.append(getItemsHtml());
+        receiptHtml.append(getFooterHtml());
+        return receiptHtml.toString();
     }
 
     public Customer getCustomer() {
