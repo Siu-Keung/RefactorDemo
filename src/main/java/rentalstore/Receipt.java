@@ -1,8 +1,6 @@
 package rentalstore;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Receipt {
     private Customer customer;
@@ -17,18 +15,18 @@ public class Receipt {
         this.rentals = rentals;
     }
 
-    private double countRegularMoviePrice(int dayRented){
+    private double calculateRegularMoviePrice(int dayRented){
         double price = 2;
         if(dayRented > 2)
             price += (dayRented - 2) * 1.5;
         return price;
     }
 
-    private double countNewReleaseMoviePrice(int dayRented){
+    private double calculateNewReleaseMoviePrice(int dayRented){
         return dayRented * 3.0;
     }
 
-    private double countChildrenMoviePrice(int dayRented){
+    private double calculateChildrenMoviePrice(int dayRented){
         double price = 1.5;
         if(dayRented > 3)
             price += (dayRented - 3) * 1.5;
@@ -39,13 +37,13 @@ public class Receipt {
         double subTotalPrice = 0;
         switch (rental.getMovie().getPriceCode()) {
             case Movie.REGULAR:
-                subTotalPrice = countRegularMoviePrice(rental.getDayRented());
+                subTotalPrice = calculateRegularMoviePrice(rental.getDayRented());
                 break;
             case Movie.NEW_RELEASE:
-                subTotalPrice = countNewReleaseMoviePrice(rental.getDayRented());
+                subTotalPrice = calculateNewReleaseMoviePrice(rental.getDayRented());
                 break;
             case Movie.CHILDREN:
-                subTotalPrice = countChildrenMoviePrice(rental.getDayRented());
+                subTotalPrice = calculateChildrenMoviePrice(rental.getDayRented());
                 break;
         }
         return subTotalPrice;
