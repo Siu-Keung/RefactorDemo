@@ -40,7 +40,17 @@ public class Receipt {
     }
 
     public String getHeaderStr(){
-        return "<H1>Rentals for <EM>" + this.customer.getName() + "</EM></H1><P>";
+        return "<H1>Rentals for <EM>" + this.customer.getName() + "</EM></H1><P>\n";
+    }
+
+    public String getItemStr(Rental rental){
+        return rental.getMovie().getTitle() + ": " + this.getItemSubTotalPrice(rental) + "<BR>\n";
+    }
+
+    public String getItemsStr(){
+        StringBuilder itemsStrBuilder = new StringBuilder();
+        this.rentals.stream().forEach(rental -> itemsStrBuilder.append(getItemStr(rental)));
+        return itemsStrBuilder.toString();
     }
 
     public String getReceiptStr(){
@@ -50,9 +60,8 @@ public class Receipt {
         List<Rental> rentals = this.rentals.stream().distinct().collect(Collectors.toList());
         Iterator<Rental> rentalSetIterator = rentals.iterator();
         while (rentalSetIterator.hasNext()) {
-            double subTotalPrice = 0;
             Rental each = rentalSetIterator.next();
-            subTotalPrice = getItemSubTotalPrice(each);
+            double subTotalPrice = getItemSubTotalPrice(each);
             //add frequent renter points
             frequentRenterPoints++;
             //add bonus for a two day new release rental
@@ -64,7 +73,6 @@ public class Receipt {
             result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(subTotalPrice) + "\n";
             totalAmount += subTotalPrice;
         }
-
         //add footer lines
         result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
         result += "You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points";
