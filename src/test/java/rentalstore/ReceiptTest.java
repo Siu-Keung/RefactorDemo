@@ -14,7 +14,7 @@ public class ReceiptTest {
     public void should_output_receipt_with_total_price_2_when_rent_REGULAR_movie_for_one_day() {
         Customer customer = new Customer("Dylan");
         List<Rental> rentals = Arrays.asList(
-                new Rental(new Movie("Titanic", Movie.REGULAR), 1)
+                new Rental(new Movie("Titanic", MovieType.REGULAR), 1)
         );
         Receipt receipt = new Receipt(customer, rentals);
         String expectedReceipt =
@@ -29,8 +29,8 @@ public class ReceiptTest {
     public void should_output_receipt_with_total_price_6_point_5_when_rent_NEW_RELEASE_movie_1_day_and_REGULAR_for_3_days() {
         Customer customer = new Customer("Dylan");
         List<Rental> rentals = Arrays.asList(
-                new Rental(new Movie("Titanic", Movie.REGULAR), 3),
-                new Rental(new Movie("The Ring", Movie.NEW_RELEASE), 1)
+                new Rental(new Movie("Titanic", MovieType.REGULAR), 3),
+                new Rental(new Movie("The Ring", MovieType.NEW_RELEASE), 1)
         );
         Receipt receipt = new Receipt(customer, rentals);
         String expectedReceipt =
@@ -46,9 +46,9 @@ public class ReceiptTest {
     public void should_return_receipt_with_total_price_8_when_rent_REGULAR_3_days_and_NEW_RELEASE_1_day_and_CHILDRENS_3_days() {
         Customer customer = new Customer("Dylan");
         List<Rental> rentals = Arrays.asList(
-                new Rental(new Movie("Titanic", Movie.REGULAR), 3),
-                new Rental(new Movie("The Ring", Movie.NEW_RELEASE), 1),
-                new Rental(new Movie("One Day", Movie.CHILDREN), 3)
+                new Rental(new Movie("Titanic", MovieType.REGULAR), 3),
+                new Rental(new Movie("The Ring", MovieType.NEW_RELEASE), 1),
+                new Rental(new Movie("One Day", MovieType.CHILDREN), 3)
         );
         Receipt receipt = new Receipt(customer, rentals);
         String expectedReceipt =
@@ -65,9 +65,9 @@ public class ReceiptTest {
     public void should_return_correct_items_details() {
         Customer customer = new Customer("Dylan");
         List<Rental> rentals = Arrays.asList(
-                new Rental(new Movie("Titanic", Movie.REGULAR), 3),
-                new Rental(new Movie("The Ring", Movie.NEW_RELEASE), 1),
-                new Rental(new Movie("One Day", Movie.CHILDREN), 3)
+                new Rental(new Movie("Titanic", MovieType.REGULAR), 3),
+                new Rental(new Movie("The Ring", MovieType.NEW_RELEASE), 1),
+                new Rental(new Movie("One Day", MovieType.CHILDREN), 3)
         );
         Receipt receipt = new Receipt(customer, rentals);
         String expectedItemsStr =

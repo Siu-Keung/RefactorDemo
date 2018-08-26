@@ -6,50 +6,45 @@ public class Receipt {
     private Customer customer;
     private List<Rental> rentals;
 
-    public Receipt(){
-
-    }
+    public Receipt() { }
 
     public Receipt(Customer customer, List<Rental> rentals) {
         this.customer = customer;
         this.rentals = rentals;
     }
 
-    private double calculateRegularMoviePrice(int dayRented){
-        double price = 2;
-        if(dayRented > 2)
-            price += (dayRented - 2) * 1.5;
+    private double calculateRegularMoviePrice(int dayRented) {
+        double price = MovieType.REGULAR.getInitialPrice();
+        if (dayRented > MovieType.REGULAR.getInitialRentedDays())
+            price += (dayRented - MovieType.REGULAR.getInitialRentedDays()) * MovieType.REGULAR.getExtraPrice();
         return price;
     }
 
-    private double calculateNewReleaseMoviePrice(int dayRented){
-        return dayRented * 3.0;
+    private double calculateNewReleaseMoviePrice(int dayRented) {
+        return dayRented * MovieType.NEW_RELEASE.getInitialPrice();
     }
 
-    private double calculateChildrenMoviePrice(int dayRented){
-        double price = 1.5;
-        if(dayRented > 3)
-            price += (dayRented - 3) * 1.5;
+    private double calculateChildrenMoviePrice(int dayRented) {
+        double price = MovieType.CHILDREN.getInitialPrice();
+        if (dayRented > MovieType.CHILDREN.getInitialRentedDays())
+            price += (dayRented - MovieType.CHILDREN.getInitialRentedDays()) * MovieType.CHILDREN.getExtraPrice();
         return price;
     }
 
-    private double getItemSubTotalPrice(Rental rental){
-        double subTotalPrice = 0;
-        switch (rental.getMovie().getPriceCode()) {
-            case Movie.REGULAR:
-                subTotalPrice = calculateRegularMoviePrice(rental.getDayRented());
-                break;
-            case Movie.NEW_RELEASE:
-                subTotalPrice = calculateNewReleaseMoviePrice(rental.getDayRented());
-                break;
-            case Movie.CHILDREN:
-                subTotalPrice = calculateChildrenMoviePrice(rental.getDayRented());
-                break;
+    private double getItemSubTotalPrice(Rental rental) {
+        switch (rental.getMovie().getMovieType()) {
+            case REGULAR:
+                return calculateRegularMoviePrice(rental.getDayRented());
+            case NEW_RELEASE:
+                return calculateNewReleaseMoviePrice(rental.getDayRented());
+            case CHILDREN:
+                return calculateChildrenMoviePrice(rental.getDayRented());
+            default:
+                return 0;
         }
-        return subTotalPrice;
     }
 
-    public double getTotalPrice(){
+    public double getTotalPrice() {
         double totalPrice = 0;
         for (Rental rental : rentals) {
             totalPrice += getItemSubTotalPrice(rental);
@@ -57,38 +52,38 @@ public class Receipt {
         return totalPrice;
     }
 
-    public String getHeaderHtml(){
+    public String getHeaderHtml() {
         return "<H1>Rentals for <EM>" + this.customer.getName() + "</EM></H1><P>\n";
     }
 
-    public String getItemHtml(Rental rental){
+    public String getItemHtml(Rental rental) {
         return rental.getMovie().getTitle() + ": " + this.getItemSubTotalPrice(rental) + "<BR>\n";
     }
 
-    public String getItemsHtml(){
+    public String getItemsHtml() {
         StringBuilder itemsStrBuilder = new StringBuilder();
         this.rentals.stream().forEach(rental -> itemsStrBuilder.append(getItemHtml(rental)));
         return itemsStrBuilder.toString();
     }
 
-    public int getRentalPointsEarned(){
+    public int getRentalPointsEarned() {
         int rentalPoints = 0;
         for (Rental rental : rentals) {
             rentalPoints++;
-            if(rental.getMovie().getPriceCode() == Movie.NEW_RELEASE && rental.getDayRented() > 1)
+            if (rental.getMovie().getMovieType() == MovieType.NEW_RELEASE && rental.getDayRented() > 1)
                 rentalPoints++;
         }
         return rentalPoints;
     }
 
-    public String getFooterHtml(){
+    public String getFooterHtml() {
         StringBuilder footerHtmlBuilder = new StringBuilder();
         footerHtmlBuilder.append("<P>You owe<EM>" + getTotalPrice() + "</EM><P>\n");
         footerHtmlBuilder.append("On this rental you earned <EM>" + getRentalPointsEarned() + "</EM> frequent renter points<P>");
         return footerHtmlBuilder.toString();
     }
 
-    public String getReceiptHtml(){
+    public String getReceiptHtml() {
         StringBuilder receiptHtml = new StringBuilder();
         receiptHtml.append(getHeaderHtml());
         receiptHtml.append(getItemsHtml());
