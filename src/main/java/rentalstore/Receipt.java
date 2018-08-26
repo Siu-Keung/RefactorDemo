@@ -13,35 +13,12 @@ public class Receipt {
         this.rentals = rentals;
     }
 
-    private double calculateRegularMoviePrice(int dayRented) {
-        double price = MovieType.REGULAR.getInitialPrice();
-        if (dayRented > MovieType.REGULAR.getInitialRentedDays())
-            price += (dayRented - MovieType.REGULAR.getInitialRentedDays()) * MovieType.REGULAR.getExtraPrice();
-        return price;
-    }
-
-    private double calculateNewReleaseMoviePrice(int dayRented) {
-        return dayRented * MovieType.NEW_RELEASE.getInitialPrice();
-    }
-
-    private double calculateChildrenMoviePrice(int dayRented) {
-        double price = MovieType.CHILDREN.getInitialPrice();
-        if (dayRented > MovieType.CHILDREN.getInitialRentedDays())
-            price += (dayRented - MovieType.CHILDREN.getInitialRentedDays()) * MovieType.CHILDREN.getExtraPrice();
-        return price;
-    }
-
     private double getItemSubTotalPrice(Rental rental) {
-        switch (rental.getMovie().getMovieType()) {
-            case REGULAR:
-                return calculateRegularMoviePrice(rental.getDayRented());
-            case NEW_RELEASE:
-                return calculateNewReleaseMoviePrice(rental.getDayRented());
-            case CHILDREN:
-                return calculateChildrenMoviePrice(rental.getDayRented());
-            default:
-                return 0;
-        }
+        MovieType movieType = rental.getMovie().getMovieType();
+        double price = movieType.getInitialPrice();
+        if(rental.getDayRented() > movieType.getInitialRentedDays())
+            price += (rental.getDayRented() - movieType.getInitialRentedDays()) * movieType.getExtraPrice();
+        return price;
     }
 
     public double getTotalPrice() {
