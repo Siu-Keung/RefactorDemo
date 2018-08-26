@@ -74,7 +74,7 @@ public class ReceiptTest {
                 "Titanic: 3.5<BR>\n" +
                         "The Ring: 3.0<BR>\n" +
                         "One Day: 1.5<BR>\n";
-        assertThat(receipt.getItemsStr(), is(expectedItemsStr));
+        assertThat(receipt.getItemsHtml(), is(expectedItemsStr));
     }
 
 }
