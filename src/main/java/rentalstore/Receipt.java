@@ -17,14 +17,18 @@ public class Receipt {
         this.rentals = rentals;
     }
 
+    private double countRegularMoviePrice(int dayRented){
+        double price = 2;
+        if(dayRented > 2)
+            price += (dayRented - 2) * 1.5;
+        return price;
+    }
+
     private double getItemSubTotalPrice(Rental rental){
         double subTotalPrice = 0;
         switch (rental.getMovie().getPriceCode()) {
             case Movie.REGULAR:
-                subTotalPrice += 2;
-                if (rental.getDayRented() > 2) {
-                    subTotalPrice += (rental.getDayRented() - 2) * 1.5;
-                }
+                subTotalPrice = countRegularMoviePrice(rental.getDayRented());
                 break;
             case Movie.NEW_RELEASE:
                 subTotalPrice += rental.getDayRented() * 3;
